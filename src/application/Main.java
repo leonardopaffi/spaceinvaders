@@ -15,10 +15,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		Image mainChLoad = new Image("/application/res/ship.png", true); //loads ship
-		ship.setImage(mainChLoad);  //show ship
+		ship.setImage(mainChLoad);  //show ship //176x147px
 		Pane pane = new Pane(); 
 		pane.getChildren().add(ship); //adds the ship to Pane
 		Scene scene = new Scene(pane, 600, 600);
+		ship.setX(100);
+		ship.setY(550);
+		ship.setPreserveRatio(true);
+		ship.setFitWidth(50);
 		scene.setOnKeyPressed(e-> keys(e)); //keyboard event
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -26,11 +30,11 @@ public class Main extends Application {
 	
 	public void keys(KeyEvent ke){
 		if(ke.getCode() == KeyCode.D){
-			double x = ship.getX()+10;
+			double x = ship.getX()+7.5;
 			ship.setX(x);
 		}
 		if(ke.getCode() == KeyCode.A){
-			double x = ship.getX()-10;
+			double x = ship.getX()-7.5;
 			ship.setX(x);
 		}
 	}
