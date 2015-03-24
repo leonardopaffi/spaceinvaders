@@ -15,44 +15,37 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
- *
- * @author 4superscient
+ * @author 4°B 2014/2015 R.Casimiri, Gualdo Tadino (PG)
  */
 public class Main extends Application {
-    
-    Pane pane;
-    ImageView ship;
-    Rectangle bullet;
+	Bullet bulletc;
+    Pane pane = new Pane();
+    Image shipV = new Image("it/gov/casimiri/spaceinvaders/resources/ship.png");
+    ImageView ship = new ImageView(shipV);; 
     Rectangle[] enemies = new Rectangle[3];
 
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 800;
 
     public static final int ENEMY_EDGE = 20;
+    
+    int contBullets = 0;
 
     boolean rightEnemy = true;
     boolean bulletIsAlive = false;
     
-    Timeline tlB;
+    //Timeline tlB;
 
     @Override
     public void start(Stage primaryStage) {
-        pane = new Pane();
 
-        Image shipV = new Image("it/gov/casimiri/spaceinvaders/resources/ship.png"); //130*115
-        ship = new ImageView(shipV);
         
-        Duration dI = new Duration(100);
+        
+        Duration dI = new Duration(25);
         KeyFrame f = new KeyFrame(dI, e -> movementCore());
         Timeline tl = new Timeline(f);
         tl.setCycleCount(Animation.INDEFINITE);
         tl.play();
-        
-        Duration dB = new Duration(100);
-        KeyFrame fB = new KeyFrame(dB, e -> movementBullet());
-        tlB = new Timeline(fB);
-        tlB.setCycleCount(Animation.INDEFINITE);
-        
         
         ship.setPreserveRatio(true);
         ship.setFitWidth(80);
@@ -79,51 +72,18 @@ public class Main extends Application {
             double x = ship.getX();
             x += 10;
             ship.setX(x);
-        } else if (ke.getCode() == KeyCode.A) {
-            double x = ship.getX();
-            x -= 10;
-            ship.setX(x);
-        } else if (ke.getCode() == KeyCode.UP) {
-            double x = bullet.getY();
-            x -= 7.5;
-            bullet.setY(x);
-        } else if (ke.getCode() == KeyCode.DOWN) {
-            double x = bullet.getY();
-            x += 7.5;
-            bullet.setY(x);
-        } else if (ke.getCode() == KeyCode.LEFT) {
-            double x = bullet.getX();
-            x -= 7.5;
-            bullet.setX(x);
-        } else if (ke.getCode() == KeyCode.RIGHT) {
-            double x = bullet.getX();
-            x += 7.5;
-            bullet.setX(x);
         } else if (ke.getCode() == KeyCode.SPACE){ //shoot
-            bulletIsAlive = true;
-            bullet = new Rectangle(300, 300, 10, 50);
-            pane.getChildren().add(bullet);
-            bullet.setX(ship.getX()+40-5);
-            bullet.setY(680-40);
-            tlB.play();
+            //bulletIsAlive = true;
+            //bullet = new Rectangle(300, 300, 10, 50);
+        	bulletc = new Bullet(10, 50, ship.getX());
+            pane.getChildren().add(bulletc.r);
+            //bullet.setX(ship.getX()+40-5);
+            //bullet.setY(680-40);
+            contBullets++;
+            //tlB.play();
         }
 
-        for (int i = 0; i < enemies.length; i++) {
-            if ((bullet != null && bullet.getX() < enemies[i].getX() + enemies[i].getWidth()
-                    && bullet.getX() + bullet.getWidth() > enemies[i].getX()
-                    && bullet.getY() < enemies[i].getY() + enemies[i].getHeight()
-                    && bullet.getHeight() + bullet.getY() > enemies[i].getY()) || 
-                    bullet.getX() <= 0){
-                
-                System.out.println("DENIED");
-                enemies[i].setWidth(0);
-                enemies[i].setHeight(0);
-                bullet.setVisible(false);
-                bullet.setWidth(0);
-                bullet.setHeight(0);
-                bulletIsAlive = false;
-            }
-        }
+      
     }
 
     public void movementCore() {
@@ -132,23 +92,19 @@ public class Main extends Application {
                 rightEnemy = false;
             }
             for (int i = 0; i < enemies.length; i++) {
-                enemies[i].setX(enemies[i].getX()+10);
+                enemies[i].setX(enemies[i].getX()+5);
             }
         } else {
             if (enemies[0].getX() <= 0) {
                 rightEnemy = true;
             }
             for (int i = 0; i < enemies.length; i++) {
-                enemies[i].setX(enemies[i].getX()-10);
+                enemies[i].setX(enemies[i].getX()-5);
             }
         }
     }
     
-    public void movementBullet() {
-        if(bulletIsAlive){
-            bullet.setY(bullet.getY()-40);   
-        }
-    }
+   
 
     public static void main(String[] args) {
         launch(args);
