@@ -72,6 +72,10 @@ public class Main extends Application {
             double x = ship.getX();
             x += 10;
             ship.setX(x);
+        } else if (ke.getCode() == KeyCode.A) {
+            double x = ship.getX();
+            x -= 10;
+            ship.setX(x);
         } else if (ke.getCode() == KeyCode.SPACE){ //shoot
             //bulletIsAlive = true;
             //bullet = new Rectangle(300, 300, 10, 50);
