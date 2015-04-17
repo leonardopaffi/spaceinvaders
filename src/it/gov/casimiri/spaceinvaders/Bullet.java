@@ -3,49 +3,53 @@ package it.gov.casimiri.spaceinvaders;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Bullet {
-	Main main = new Main();
 	boolean bulletIsAlive = true;
 	Rectangle r = new Rectangle (0,0);
-	public Bullet (){
-		
-	}
+
+	public boolean collisioncheck (Rectangle enemies[]){
+    	for (int i = 0; i < enemies.length; i++) {
+    		if (r != null){
+    			if ((r != null && r.getX() < enemies[i].getX() + enemies[i].getWidth()
+    				&& r.getX() + r.getWidth() > enemies[i].getX()
+    			    && r.getY() < enemies[i].getY() + enemies[i].getHeight()
+    			    && r.getHeight() + r.getY() > enemies[i].getY()))
+    			{
+        			System.out.println("DENIED");
+        			enemies[i].setWidth(0);
+        			enemies[i].setHeight(0);
+        			r.setVisible(false);
+        			r.setWidth(0);
+        			r.setHeight(0);
+        		r= null;
+        			bulletIsAlive = false;
+        	}
+    	}
+    }
+    	return bulletIsAlive;
+    }
 	
-	public Bullet (double x, double y, double pos){
+	public Bullet (double x, double y, double pos, Rectangle v[], Pane p){
 		Timeline tlB;
 		r = new Rectangle (x, y);
-		main.pane.getChildren().add(r);
+		p.getChildren().add(r);
         r.setX(pos+40-5);
         r.setY(680-40);
         Duration dB = new Duration(25);
         KeyFrame fB = new KeyFrame(dB, e -> {
+        	if(r != null){
             	r.setY(r.getY()-5);
-            	collisioncheck();
+            	collisioncheck(v);
+        	}
         });
         tlB = new Timeline(fB);
         tlB.setCycleCount(Animation.INDEFINITE);
         tlB.play();
 	}
 	
-	 public boolean collisioncheck (){
-	    	for (int i = 0; i < main.enemies.length; i++) {
-	        if ((r != null && r.getX() < main.enemies[i].getX() + main.enemies[i].getWidth()
-	                && r.getX() + r.getWidth() > main.enemies[i].getX()
-	                && r.getY() < main.enemies[i].getY() + main.enemies[i].getHeight()
-	                && r.getHeight() + r.getY() > main.enemies[i].getY())){
-	            
-	            System.out.println("DENIED");
-	            main.enemies[i].setWidth(0);
-	            main.enemies[i].setHeight(0);
-	            r.setVisible(false);
-	            r.setWidth(0);
-	            r.setHeight(0);
-	            bulletIsAlive = false;
-	        }
-	    }
-	    	return bulletIsAlive;
-	    }
+	 
 }
