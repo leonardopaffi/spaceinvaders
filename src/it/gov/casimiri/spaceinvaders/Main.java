@@ -74,6 +74,7 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
         primaryStage.show();
+        //mp.play();
     }
 
     public void keyboardManage(KeyEvent ke) {
@@ -93,13 +94,13 @@ public class Main extends Application {
 
     public void movementCore() {
         if (rightEnemy) {
-        	for (int K = 0; K < enemies.length; K+=4) {
+        	for (int K = 0; K < enemies.length; K+=3) {
 				if (enemies[K].getX() + ENEMY_EDGE >= SCREEN_WIDTH) {
                 rightEnemy = false;
-            }
-            for (int i = 0; i < enemies.length; i++) {
-                enemies[i].setX(enemies[i].getX()+5);
-            }
+				}
+			}
+        	for (int i = 0; i < enemies.length; i++) {
+				enemies[i].setX(enemies[i].getX()+5);
 			}
         } else {
             if (enemies[0].getX() <= 0) {
