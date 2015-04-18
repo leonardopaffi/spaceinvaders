@@ -10,28 +10,6 @@ import javafx.util.Duration;
 public class Bullet {
 	boolean bulletIsAlive = true;
 	Rectangle r = new Rectangle (0,0);
-
-	public boolean collisioncheck (Rectangle enemies[]){
-    	for (int i = 0; i < enemies.length; i++) {
-    		if (r != null){
-    			if ((r != null && r.getX() < enemies[i].getX() + enemies[i].getWidth()
-    				&& r.getX() + r.getWidth() > enemies[i].getX()
-    			    && r.getY() < enemies[i].getY() + enemies[i].getHeight()
-    			    && r.getHeight() + r.getY() > enemies[i].getY()))
-    			{
-        			System.out.println("DENIED");
-        			enemies[i].setWidth(0);
-        			enemies[i].setHeight(0);
-        			r.setVisible(false);
-        			r.setWidth(0);
-        			r.setHeight(0);
-        		r= null;
-        			bulletIsAlive = false;
-        	}
-    	}
-    }
-    	return bulletIsAlive;
-    }
 	
 	public Bullet (double x, double y, double pos, Rectangle v[], Pane p){
 		Timeline tlB;
@@ -51,5 +29,27 @@ public class Bullet {
         tlB.play();
 	}
 	
-	 
+	private boolean collisioncheck (Rectangle enemies[]){
+    	for (int i = 0; i < enemies.length; i++) {
+    		if (r != null && enemies[i] != null){
+    			if ((r != null && r.getX() < enemies[i].getX() + enemies[i].getWidth()
+    				&& r.getX() + r.getWidth() > enemies[i].getX()
+    			    && r.getY() < enemies[i].getY() + enemies[i].getHeight()
+    			    && r.getHeight() + r.getY() > enemies[i].getY()))
+    			{
+        			System.out.println("DENIED");
+        			enemies[i].setWidth(0);
+        			enemies[i].setHeight(0);
+        			enemies[i].setVisible(false);
+        			enemies[i] = null;
+        			r.setVisible(false);
+        			r.setWidth(0);
+        			r.setHeight(0);
+        			r= null;
+        			bulletIsAlive = false;
+        	}
+    	}
+    }
+    	return bulletIsAlive;
+    }
 }

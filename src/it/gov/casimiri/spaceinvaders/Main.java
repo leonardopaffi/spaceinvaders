@@ -7,6 +7,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,6 +29,8 @@ public class Main extends Application {
     Image shipV = new Image("it/gov/casimiri/spaceinvaders/resources/ship.png");
     ImageView ship = new ImageView(shipV);; 
     Rectangle[] enemies = new Rectangle[12];
+    Rectangle pointer = new Rectangle();
+    String statusMP;
 
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 800;
@@ -35,8 +38,6 @@ public class Main extends Application {
     public static final int ENEMY_EDGE = 20;
     public static final int ENEMY_ROW = 3;
     public static final int ENEMY_COLUMN = 4;
-    
-    int contBullets = 0;
 
     boolean rightEnemy = true;
     boolean bulletIsAlive = false;
@@ -45,7 +46,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
 
     	URL resource = getClass().getResource("resources/attacco.mp3");
-    	System.out.println(resource.toString());
     	Media media = new Media(resource.toString());
     	mp = new MediaPlayer(media);
     	
@@ -56,8 +56,14 @@ public class Main extends Application {
         
         for (int j = 0; j < ENEMY_ROW; j++) {
 			for (int i = 0; i < ENEMY_COLUMN; i++) {
-        		enemies[j*4+i] = new Rectangle(i * 50, j*50, ENEMY_EDGE, ENEMY_EDGE);
+        		enemies[j*4+i] = new Rectangle(i*50, j*50, ENEMY_EDGE, ENEMY_EDGE);
         		pane.getChildren().add(enemies[j*4+i]);
+        		if (i==3 && j==0){
+        			pointer.setWidth(ENEMY_EDGE);
+        			pointer.setHeight(ENEMY_EDGE);
+        			pointer.setFill(Color.TRANSPARENT);
+        			pointer.setX(enemies[i].getX() + ENEMY_EDGE);
+        		}
         	}
         }
         
@@ -74,7 +80,6 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
         primaryStage.show();
-        //mp.play();
     }
 
     public void keyboardManage(KeyEvent ke) {
@@ -88,30 +93,41 @@ public class Main extends Application {
             ship.setX(x);
         } else if (ke.getCode() == KeyCode.SPACE){ //shoot
         	bulletc = new Bullet(10, 50, ship.getX(), enemies, pane);
-            contBullets++;
         } 
     }
 
     public void movementCore() {
         if (rightEnemy) {
-        	for (int K = 0; K < enemies.length; K+=3) {
-				if (enemies[K].getX() + ENEMY_EDGE >= SCREEN_WIDTH) {
+			if (pointer.getX() + ENEMY_EDGE >= SCREEN_WIDTH) {
                 rightEnemy = false;
-				}
 			}
         	for (int i = 0; i < enemies.length; i++) {
 				enemies[i].setX(enemies[i].getX()+5);
 			}
+        	pointer.setX(pointer.getX()+5);
         } else {
-            if (enemies[0].getX() <= 0) {
+            if (pointer.getX() - ((ENEMY_EDGE*ENEMY_COLUMN+50)/2*(ENEMY_COLUMN-1)) <= 0) {
                 rightEnemy = true;
             }
             for (int i = 0; i < enemies.length; i++) {
                 enemies[i].setX(enemies[i].getX()-5);
             }
+            pointer.setX(pointer.getX()-5);
         }
+        musicLoop();
     }
-
+    
+    public void musicLoop(){
+        mp.setOnEndOfMedia(new Runnable() {
+        	public void run() {
+        		mp.stop();
+                mp.play();
+                return;
+            }
+       });
+       mp.play();
+    }
+    
     public static void main(String[] args) {
         launch(args);
     }
