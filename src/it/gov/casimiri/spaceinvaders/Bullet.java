@@ -9,7 +9,7 @@ import javafx.util.Duration;
 
 public class Bullet {
 	boolean bulletIsAlive = true;
-	Rectangle r = new Rectangle (0,0);
+	Rectangle r = null;
 	
 	public Bullet (double x, double y, double pos, Rectangle v[], Pane p){
 		Timeline tlB;
@@ -17,7 +17,7 @@ public class Bullet {
 		p.getChildren().add(r);
         r.setX(pos+40-5);
         r.setY(680-40);
-        Duration dB = new Duration(25);
+        Duration dB = new Duration(5);
         KeyFrame fB = new KeyFrame(dB, e -> {
         	if(r != null){
             	r.setY(r.getY()-5);
@@ -33,11 +33,11 @@ public class Bullet {
     	for (int i = 0; i < enemies.length; i++) {
     		if (r != null && enemies[i] != null){
     			if ((r != null && r.getX() < enemies[i].getX() + enemies[i].getWidth()
-    				&& r.getX() + r.getWidth() > enemies[i].getX()
-    			    && r.getY() < enemies[i].getY() + enemies[i].getHeight()
-    			    && r.getHeight() + r.getY() > enemies[i].getY()))
+    			&& r.getX() + r.getWidth() > enemies[i].getX()
+    		    && r.getY() < enemies[i].getY() + enemies[i].getHeight()
+    		    && r.getHeight() + r.getY() > enemies[i].getY()))
     			{
-        			System.out.println("DENIED");
+    				System.out.println("DENIED");
         			enemies[i].setWidth(0);
         			enemies[i].setHeight(0);
         			enemies[i].setVisible(false);
@@ -47,9 +47,17 @@ public class Bullet {
         			r.setHeight(0);
         			r= null;
         			bulletIsAlive = false;
-        	}
+    			}
+    		}
     	}
-    }
+    	if(r!=null){
+    		if(r.getY()<0){
+    			r.setVisible(false);
+    			r.setWidth(0);
+    			r.setHeight(0);
+    			r= null;
+    		}
+    	}
     	return bulletIsAlive;
     }
 }
