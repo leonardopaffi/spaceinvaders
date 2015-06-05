@@ -1,9 +1,12 @@
 package it.gov.casimiri.spaceinvaders;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.net.URL;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -19,7 +22,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -33,7 +35,7 @@ public class Main extends Application {
     public static final int SCREEN_HEIGHT = 800;
 
     public static final int ENEMY_EDGE = 40;
-    public static final int ENEMY_ROW = 7;
+    public static final int ENEMY_ROW = 4;
     public static final int ENEMY_COLUMN = 7;
 
     public static final int SPEED = 3;
@@ -67,6 +69,7 @@ public class Main extends Application {
     Text punt = new Text("Score: " + score);
 
     String sRecord = "";
+    String n;
 
     public void again() {
         for (int j = 0; j < ENEMY_ROW; j++) {
@@ -131,7 +134,7 @@ public class Main extends Application {
         primaryStage.show();
 
         String k = System.getProperty("user.home");
-        String n = k + File.separator + "si.txt";
+        n = k + File.separator + "si.txt";
         System.out.println(n);
 
         try {
@@ -222,7 +225,20 @@ public class Main extends Application {
             newLevel = true;
         }
     }
-
+    
+    @Override
+    public void stop(){
+    	 try {
+             FileWriter fw = new FileWriter(n);
+             BufferedWriter bw = new BufferedWriter(fw);
+             bw.write(""+score);
+             bw.close();
+             fw.close();
+         } catch (Exception e) {
+             record = 0;
+         }
+    }
+    
     public static void main(String[] args) {
         launch(args);
     }
