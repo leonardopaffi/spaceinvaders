@@ -29,20 +29,10 @@ import javafx.util.Duration;
 /**
  * @author 4B 2014/2015 R.Casimiri, Gualdo Tadino (PG)
  */
-public class Main extends Application {
-
-    public static final int SCREEN_WIDTH = 800;
-    public static final int SCREEN_HEIGHT = 800;
-
-    public static final int ENEMY_EDGE = 40;
-    public static final int ENEMY_ROW = 4;
-    public static final int ENEMY_COLUMN = 7;
-
-    public static final int SPEED = 3;
-
-    public int record = 0;
-
-    Bullet bulletc;
+public class Main extends Application implements Measures{
+	
+	public int record = 0;
+	Bullet bulletc;
     MediaPlayer mp;
     Pane pane = new Pane();
     Image backV = new Image("it/gov/casimiri/spaceinvaders/resources/back.jpg");
