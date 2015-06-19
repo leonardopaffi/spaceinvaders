@@ -1,4 +1,4 @@
-# STABLE RELEASE 17/06/2015
+# STABLE RELEASE 0.1 17/06/2015
 
 Project started 6th March 2015
 
